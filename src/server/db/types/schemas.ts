@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/prefer-function-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // User Interface
 export interface User {
   id: number;
@@ -99,6 +101,7 @@ export interface TodoD {
 }
 
 export interface TransactionD {
+  timestamp(arg0: { withTimezone: boolean; }): unknown;
   serial: () => { primaryKey: () => any };
   integer: () => { references: () => any };
   varchar: (options: { length: number }) => { default: (value: string) => any };
@@ -121,43 +124,43 @@ export interface UserTrackerEventD {
   jsonb: () => any;
 }
 
-interface UserT {
+export interface UserT {
   (name: string): {
     on: (column: any) => any;
   };
 }
 
-interface HabitT {
+export interface HabitT {
   (name: string): {
     on: (column: any) => any;
   };
 }
 
-interface HabitCheckT {
+export interface HabitCheckT {
   (name: string): {
     on: (column: any) => any;
   };
 }
 
-interface TodoT {
+export interface TodoT {
   (name: string): {
     on: (column: any) => any;
   };
 }
 
-interface TransactionT {
+export interface TransactionT {
   (name: string): {
     on: (column: any) => any;
   };
 }
 
-interface UserTrackerT {
+export interface UserTrackerT {
   (name: string): {
     on: (column: any) => any;
   };
 }
 
-interface UserTrackerEventT {
+export interface UserTrackerEventT {
   (name: string): {
     on: (column: any) => any;
   };

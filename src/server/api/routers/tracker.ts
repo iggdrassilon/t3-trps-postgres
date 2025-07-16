@@ -2,21 +2,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { createTRPCRouter, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 import { z } from 'zod'
-import { db, userTrackers, userTrackerEvents } from '@/server/db/schema'
+import { db } from '~/server/db/index'
+import { userTrackers, userTrackerEvents } from '~/server/db/schema'
 import { eq } from 'drizzle-orm'
 import type { IUserTracker, IUserTrackerEvent } from '../interfaces'
 
 // Schemas
 const trackerIdSchema = z.object({ id: z.number().int().positive() })
+
 const userIdSchema = z.object({ userId: z.number().int().positive() })
+
 const createTrackerSchema = z.object({
   userId: z.number().int(),
   sessionId: z.string().min(1),
   startedAt: z.date().optional(),
   endedAt: z.date().optional(),
 })
+
 const createTrackerEventSchema = z.object({
   trackerId: z.number().int(),
   eventType: z.string().min(1),
@@ -27,10 +31,9 @@ const createTrackerEventSchema = z.object({
   meta: z.record(z.unknown()).optional(),
 })
 
-// Router
 export const trackerRouter = createTRPCRouter({
   // Get all tracker sessions for user
-  list: protectedProcedure
+  list: publicProcedure
     .input(userIdSchema.optional())
     .query(async ({ ctx, input }): Promise<IUserTracker[]> => {
       const userId = input?.userId ?? ctx.session.user.id
@@ -39,7 +42,7 @@ export const trackerRouter = createTRPCRouter({
     }),
 
   // Get tracker session by id
-  get: protectedProcedure
+  get: publicProcedure
     .input(trackerIdSchema)
     .query(async ({ input }): Promise<IUserTracker | undefined> => {
       const result = await db.select().from(userTrackers).where(eq(userTrackers.id, input.id))
@@ -47,31 +50,28 @@ export const trackerRouter = createTRPCRouter({
     }),
 
   // Create tracker session
-  create: protectedProcedure
+  create: publicProcedure
     .input(createTrackerSchema)
     .mutation(async ({ input }): Promise<IUserTracker> => {
       const [created] = await db.insert(userTrackers).values(input).returning()
       return created as IUserTracker
     }),
 
-  // Create tracker event
-  createEvent: protectedProcedure
+  createEvent: publicProcedure
     .input(createTrackerEventSchema)
     .mutation(async ({ input }): Promise<IUserTrackerEvent> => {
       const [created] = await db.insert(userTrackerEvents).values(input).returning()
       return created as IUserTrackerEvent
     }),
 
-  // Get all events for tracker session
-  events: protectedProcedure
+  events: publicProcedure
     .input(trackerIdSchema)
     .query(async ({ input }): Promise<IUserTrackerEvent[]> => {
       const result = await db.select().from(userTrackerEvents).where(eq(userTrackerEvents.trackerId, input.id))
       return result as IUserTrackerEvent[]
     }),
 
-  // Get all events for user
-  getUserActivity: protectedProcedure
+  getUserActivity: publicProcedure
     .input(userIdSchema)
     .query(async ({ input }): Promise<{ sessions: IUserTracker[]; events: IUserTrackerEvent[] }> => {
       const sessions = await db.select().from(userTrackers).where(eq(userTrackers.userId, input.userId))

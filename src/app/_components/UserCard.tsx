@@ -1,4 +1,4 @@
-import { type IUser } from '@/server/api/interfaces'
+import { type IUser } from '~/server/api/interfaces'
 
 export function UserCard({ user }: { user: IUser }) {
   return (

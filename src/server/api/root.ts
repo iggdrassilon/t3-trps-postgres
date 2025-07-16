@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc'
 
-import { createTRPCRouter } from '../trpc'
-import { userRouter } from '.~/user'
+import { userRouter } from '~/server/api/routers/user'
 import { habitRouter } from './routers/habit'
 import { todoRouter } from './routers/todo'
 import { trackerRouter } from './routers/tracker'

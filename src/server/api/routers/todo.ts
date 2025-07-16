@@ -3,15 +3,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { createTRPCRouter, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { eq } from 'drizzle-orm'
-import { db, todos } from '@/server/db/schema'
+import { todos } from '~/server/db/schema'
 import type { ITodo } from '../interfaces'
+import { db } from '~/server/db/index'
 
 export const todoRouter = createTRPCRouter({
   // Получить список todo
-  list: protectedProcedure
+  list: publicProcedure
     .input(z.object({ userId: z.number().int().positive() }).optional())
     .query(async ({ ctx, input }): Promise<ITodo[]> => {
       const userId = input?.userId ?? ctx.session.user.id
@@ -19,7 +20,7 @@ export const todoRouter = createTRPCRouter({
       return result
     }),
 
-  get: protectedProcedure
+  get: publicProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .query(async ({ input }): Promise<ITodo | undefined> => {
       // Типизируем результат
@@ -27,7 +28,7 @@ export const todoRouter = createTRPCRouter({
       return result[0] ?? undefined
     }),
 
-  create: protectedProcedure
+  create: publicProcedure
     .input(z.object({
       userId: z.number().int(),
       title: z.string().min(1).max(100),
@@ -40,7 +41,7 @@ export const todoRouter = createTRPCRouter({
       return created
     }),
 
-  update: protectedProcedure
+  update: publicProcedure
     .input(z.object({
       id: z.number().int(),
       title: z.string().min(1).max(100).optional(),
@@ -53,14 +54,14 @@ export const todoRouter = createTRPCRouter({
       return updated
     }),
 
-  delete: protectedProcedure
+  delete: publicProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       await db.delete(todos).where(eq(todos.id, input.id))
       return { success: true }
     }),
 
-  analytics: protectedProcedure
+  analytics: publicProcedure
     .input(z.object({ userId: z.number().int().positive() }).optional())
     .query(async ({ ctx, input }): Promise<{ totalTodos: number; completed: number; completionRate: number }> => {
       const userId = input?.userId ?? ctx.session.user.id

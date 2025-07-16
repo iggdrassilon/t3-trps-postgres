@@ -2,15 +2,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
  
-import { createTRPCRouter, protectedProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../trpc'
 import { z } from 'zod'
-import { db, transactions } from '@/server/db/schema'
+import { transactions } from '~/server/db/schema'
+import { db } from '~/server/db/index'
 import { eq } from 'drizzle-orm'
 import type { ITransaction } from '../interfaces'
-
 // Schemas
 const transactionIdSchema = z.object({ id: z.number().int().positive() })
+
 const userIdSchema = z.object({ userId: z.number().int().positive() })
+
 const createTransactionSchema = z.object({
   userId: z.number().int(),
   type: z.enum(['income', 'expense', 'transfer']),
@@ -21,6 +23,7 @@ const createTransactionSchema = z.object({
   relatedTo: z.number().optional(),
   meta: z.record(z.unknown()).optional(),
 })
+
 const updateTransactionSchema = z.object({
   id: z.number().int(),
   type: z.enum(['income', 'expense', 'transfer']).optional(),
@@ -32,9 +35,8 @@ const updateTransactionSchema = z.object({
   meta: z.record(z.unknown()).optional(),
 })
 
-// Router
 export const transactionRouter = createTRPCRouter({
-  list: protectedProcedure
+  list: publicProcedure
     .input(userIdSchema.optional())
     .query(async ({ ctx, input }): Promise<ITransaction[]> => {
       const userId = input?.userId ?? ctx.session.user.id
@@ -42,36 +44,35 @@ export const transactionRouter = createTRPCRouter({
       return result as ITransaction[]
     }),
 
-  get: protectedProcedure
+  get: publicProcedure
     .input(transactionIdSchema)
     .query(async ({ input }): Promise<ITransaction | undefined> => {
       const result = await db.select().from(transactions).where(eq(transactions.id, input.id))
       return result[0] as ITransaction | undefined
     }),
 
-  create: protectedProcedure
+  create: publicProcedure
     .input(createTransactionSchema)
     .mutation(async ({ input }): Promise<ITransaction> => {
       const [created] = await db.insert(transactions).values(input).returning()
       return created as ITransaction
     }),
 
-  update: protectedProcedure
+  update: publicProcedure
     .input(updateTransactionSchema)
     .mutation(async ({ input }): Promise<ITransaction> => {
       const [updated] = await db.update(transactions).set(input).where(eq(transactions.id, input.id)).returning()
       return updated as ITransaction
     }),
 
-  delete: protectedProcedure
+  delete: publicProcedure
     .input(transactionIdSchema)
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       await db.delete(transactions).where(eq(transactions.id, input.id))
       return { success: true }
     }),
 
-  // Analytics for transactions (total, by category, etc.)
-  analytics: protectedProcedure
+  analytics: publicProcedure
     .input(userIdSchema.optional())
     .query(async ({ ctx, input }): Promise<{ total: number; byCategory: Record<string, number> }> => {
       const userId = input?.userId ?? ctx.session.user.id

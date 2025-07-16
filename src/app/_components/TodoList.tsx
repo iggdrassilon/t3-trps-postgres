@@ -1,5 +1,6 @@
-import { type ITodo } from '@/server/api/interfaces'
-import { api } from '@/trpc/react'
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
+import { type ITodo } from '~/server/api/interfaces'
+import { api } from '~/trpc/react'
 import { Card, CardHeader, CardContent, CardTitle } from 'shadcn/ui/card'
 
 interface TodoListProps {
