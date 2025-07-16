@@ -104,6 +104,9 @@ All models are defined in [`src/server/db/schema.ts`](src/server/db/schema.ts).
 ```
 
 ## All Tree Map
+
+```
+
 ├── README.md                  # Instructions for launch and testing, tracker and transactions description
 ├── drizzle.config.ts          # Drizzle ORM configuration
 ├── eslint.config.js
@@ -151,6 +154,7 @@ All models are defined in [`src/server/db/schema.ts`](src/server/db/schema.ts).
 ├── start-database.sh                # Script to launch DB in Docker
 └── tsconfig.json
 
+```
 
 ## LIST OF RELATIONS
                     List of relations
