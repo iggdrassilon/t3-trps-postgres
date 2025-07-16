@@ -44,3 +44,8 @@ yarn-error.log*
 
 # idea files
 .idea
+
+# dev files
+features
+drizzle
+src/app/Dashboard

@@ -1,8 +1,8 @@
 'use client'
-import { trpc } from '@/trpc/react'
+import { trpc } from '~/trpc/react'
 import { useState } from 'react'
 
-export function HabitList() {
+export function TracksList() {
   const { data: habits } = trpc.habit.getAll.useQuery()
   const checkHabit = trpc.habit.checkHabit.useMutation()
   const today = new Date().toISOString().slice(0, 10)
