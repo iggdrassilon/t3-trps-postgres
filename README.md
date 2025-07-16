@@ -157,6 +157,8 @@ All models are defined in [`src/server/db/schema.ts`](src/server/db/schema.ts).
 ```
 
 ## LIST OF RELATIONS
+
+```
                     List of relations
  Schema |            Name             | Type  |  Owner   
 --------+-----------------------------+-------+----------
@@ -168,6 +170,8 @@ All models are defined in [`src/server/db/schema.ts`](src/server/db/schema.ts).
  public | t3-empty_user_tracker       | table | postgres
  public | t3-empty_user_tracker_event | table | postgres
 (7 rows)
+
+```
 
 ## License
 
