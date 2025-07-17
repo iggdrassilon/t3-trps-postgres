@@ -31,6 +31,7 @@ npm install
 ### 3. Apply database migrations:
 
 ```bash
+npx drizzle-kit generate:pg
 npx drizzle-kit push:pg
 ```
 
@@ -42,7 +43,7 @@ npm run dev
 
 ### 5. Open the application
 
-Visit [http://localhost:3003](http://localhost:3003)  
+Visit [http://localhost:3000](http://localhost:3000)  
 You can test API endpoints and tracker features via the main page (or `/dashboard` if implemented).
 
 ## API Overview
