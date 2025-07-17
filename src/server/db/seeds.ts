@@ -135,10 +135,45 @@ async function main() {
   ])
 
   console.log('✅ Seeded database!')
-  process.exit(0)
+  await inspectDatabase()
+}
+
+async function inspectDatabase() {
+  try {
+    // Fetch and log users
+    const allUsers = await db.select().from(users);
+    console.log('Users:', allUsers);
+
+    // Fetch and log habits
+    const allHabits = await db.select().from(habits);
+    console.log('Habits:', allHabits);
+
+    // Fetch and log habit checks
+    const allHabitChecks = await db.select().from(habitChecks);
+    console.log('Habit Checks:', allHabitChecks);
+
+    // Fetch and log todos
+    const allTodos = await db.select().from(todos);
+    console.log('Todos:', allTodos);
+
+    // Fetch and log transactions
+    const allTransactions = await db.select().from(transactions);
+    console.log('Transactions:', allTransactions);
+
+    // Fetch and log user trackers
+    const allUserTrackers = await db.select().from(userTrackers);
+    console.log('User Trackers:', allUserTrackers);
+
+    // Fetch and log user tracker events
+    const allUserTrackerEvents = await db.select().from(userTrackerEvents);
+    console.log('User Tracker Events:', allUserTrackerEvents);
+
+    console.log('Database inspection complete!');
+  } catch (error) {
+    console.error('Error inspecting database:', error);
+  }
 }
 
 main().catch((e) => {
   console.error(e)
-  process.exit(1)
 })
