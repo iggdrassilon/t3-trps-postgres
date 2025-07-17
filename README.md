@@ -106,54 +106,92 @@ All models are defined in [`src/server/db/schema.ts`](src/server/db/schema.ts).
 ## All Tree Map
 
 ```
-
 ├── README.md                  # Instructions for launch and testing, tracker and transactions description
+├── drizzle
+│   ├── 0000_gray_hardball.sql
+│   ├── 0001_fat_martin_li.sql
+│   └── meta
+│       ├── 0000_snapshot.json
+│       ├── 0001_snapshot.json
+│       └── _journal.json
 ├── drizzle.config.ts          # Drizzle ORM configuration
-├── eslint.config.js
+├── eslint.config.ts
 ├── next-env.d.ts
 ├── next.config.js
 ├── package-lock.json
 ├── package.json
-├── postcss.config.js
-├── prettier.config.js
+├── postcss.config.ts
+├── prettier.config.ts
 ├── public
 │   └── favicon.ico
 ├── src
 │   ├── app
-│   │   ├── _components             # UI components
-│   │   │   ├── HabitList.tsx            
-│   │   │   ├── post.tsx            
-│   │   │   ├── TodoList.tsx            
-│   │   │   └── UserCard.tsx            
+│   │   ├── UI
+│   │   │   └── card.tsx
+│   │   ├── _components         # UI components
+│   │   │   ├── HabitList.tsx
+│   │   │   ├── SeedDashboard.tsx
+│   │   │   ├── TodoList.tsx
+│   │   │   ├── UserCard.tsx
+│   │   │   └── post.tsx
 │   │   ├── api
 │   │   │   └── trpc
 │   │   │       └── [trpc]
-│   │   │           └── route.ts    # tRPC entry point for Next.js API
+│   │   │           └── route.ts # tRPC entry point for Next.js API
+│   │   ├── dashboard
+│   │   │   └── page.tsx
+│   │   ├── habit
+│   │   │   └── page.tsx
+│   │   ├── hooks
+│   │   │   └── useMobile.tsx
 │   │   ├── layout.tsx
-│   │   └── page.tsx                # Main page (for testing endpoints)
+│   │   ├── lib
+│   │   │   ├── config
+│   │   │   ├── constants
+│   │   │   └── utils
+│   │   │       └── stMerge.ts
+│   │   ├── page.tsx            # Main page (for testing endpoints)
+│   │   ├── todo
+│   │   │   └── page.tsx
+│   │   ├── tracker
+│   │   │   ├── page.tsx
+│   │   │   └── users
+│   │   │       └── page.tsx
+│   │   └── transaction
+│   │       └── page.tsx
 │   ├── env.js
+│   ├── features
+│   │   └── tracker
+│   │       └── UI
+│   │           └── trackerList.tsx
 │   ├── server
 │   │   ├── api
-│   │   │   ├── root.ts             # Root tRPC router
+│   │   │   ├── interfaces.ts
+│   │   │   ├── root.ts         # Root tRPC router
 │   │   │   ├── routers
-│   │   │   │   ├── user.ts         # User router (roles, CRUD)
-│   │   │   │   ├── habit.ts        # Habit router
-│   │   │   │   ├── todo.ts         # Todo router
-│   │   │   │   ├── tracker.ts      # Activity tracker router
-│   │   │   │   └── transaction.ts  # Financial transaction router
-│   │   │   └── trpc.ts
+│   │   │   │   ├── habit.ts    # Habit router
+│   │   │   │   ├── post.ts
+│   │   │   │   ├── todo.ts     # Todo router
+│   │   │   │   ├── tracker.ts  # Activity tracker router
+│   │   │   │   ├── transaction.ts # Financial transaction router
+│   │   │   │   └── user.ts     # User router (roles, CRUD)
+│   │   │   ├── trpc.ts
+│   │   │   └── types
 │   │   └── db
-│   │       ├── index.ts      # Drizzle initialization and export
-│   │       └── schema.ts     # All data schemas (user, habit, todo, tracker, transaction)
+│   │       ├── index.ts        # Drizzle initialization and export
+│   │       ├── schema.ts       # All data schemas (user, habit, todo, tracker, transaction)
+│   │       ├── seeds.ts
+│   │       └── types
+│   │           └── schemas.ts
 │   ├── styles
 │   │   └── globals.css
 │   └── trpc
 │       ├── query-client.ts
 │       ├── react.tsx
 │       └── server.ts
-├── start-database.sh                # Script to launch DB in Docker
-└── tsconfig.json
-
+├── start-database.sh          # Script to launch DB in Docker
+├── tsconfig.json
+└── yarn.lock
 ```
 
 ## LIST OF RELATIONS

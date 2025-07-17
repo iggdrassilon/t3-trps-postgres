@@ -10,13 +10,16 @@ import type { IHabit, IHabitCheck } from '../interfaces'
 import { db } from '~/server/db/index'
 
 const habitIdSchema = z.object({ id: z.number().int().positive() })
+
 const userIdSchema = z.object({ userId: z.number().int().positive() })
+
 const createHabitSchema = z.object({
   userId: z.number().int(),
   title: z.string().min(1).max(100),
   description: z.string().max(500).optional(),
   isPublic: z.boolean().optional(),
 })
+
 const updateHabitSchema = z.object({
   id: z.number().int(),
   title: z.string().min(1).max(100).optional(),
